@@ -37,6 +37,12 @@ CREATE TABLE master (
                     );
 
 
+#made mistake above. Didnt define PRIMARY KEY. 
+
+ALTER TABLE master ADD PRIMARY KEY(lahmanID);
+
+
+
 #import master.csv from local file system in to mysql database
 LOAD DATA LOCAL INFILE 'master.csv'
     INTO TABLE master
