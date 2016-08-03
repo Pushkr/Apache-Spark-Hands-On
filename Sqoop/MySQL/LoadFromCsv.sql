@@ -44,11 +44,11 @@ ALTER TABLE master ADD PRIMARY KEY(lahmanID);
 
 
 #import master.csv from local file system in to mysql database
-LOAD DATA LOCAL INFILE 'master.csv'
-    INTO TABLE master
-    fields terminated by ','
-    enclosed by '"'
-    line terminated by '\n'
+LOAD DATA LOCAL INFILE 'Master.csv' 
+  INTO TABLE master 
+  FIELDS TERMINATED BY ',' 
+  ENCLOSED BY '"' 
+  LINES TERMINATED BY '\n';
 
 
 
