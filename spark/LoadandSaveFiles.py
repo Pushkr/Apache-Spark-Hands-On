@@ -29,11 +29,12 @@ ListA.saveAsTextFile("file:///home/cloudera/Desktop/outputfile")
 
 #Loading JSON files:
 #==================
-
-# Loading json file can be accomplished using textFile() methond and using parsing meth ods 
-# like "json.loads" (for string like objects) or "json.load" (for file like object)
-#I think, json.load may not be useful since we are loading file using spark method textFile()
-# already, that gives us RDD with string like object. Need to research this more...
+'''
+Loading json file can be accomplished using textFile() methond and using parsing meth ods 
+like "json.loads" (for string like objects) or "json.load" (for file like object)
+I think, json.load may not be useful since we are loading file using spark method textFile()
+already, that gives us RDD with string like object. Need to research this more...
+'''
 
 file = sc.textFile("data.json")
 records = file.map(lambda x : json.loads(x))
@@ -46,8 +47,32 @@ records.map(lambda x : json_dumps(x))
  .saveAsTextFile("json_output")
  
  
+#=======================================================================
+# Loading CSV files
+#==================
+
+'''
+CSV can be loaded using same method of reading as textFile() and pasring using python
+library "csv". 
+csv.reader() and csv.writer() are two basic methods that can be used for simple read and
+write operation. Both of these methods only create object for reading file. Actual row wise
+reading/writing does not start until 'for' loop is run.
+'''
+
+'''
+***Although, book recommends textfile + parsing method, a better method is using databrick's CSV package.
+start up python-spark shell using -
+'''
+pyspark --package com.databricks:spark-csv_2.11:1.0.3 --master yarn-client
+
+# and then read the file using 
+df = sqlContext.read.format("com.databricks.spark.csv")
+      .option("header", "true")
+      .load("file:///home/cloudera/Desktop/HH.csv")
 
 
+
+ 
 
 
 
