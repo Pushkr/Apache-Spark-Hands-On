@@ -59,17 +59,50 @@ If a file is loaded using json, select('column name') method can be used.
 
 Using python for SparkSQL, a simple `row.columnname`  or `row['column name']`can access columns of a row using its name.,
 
-##5.Reading HIVE table -
+##5.Reading HIVE table 
 And existing hive table can be read simpley using sql() method of HiveContext
 
    from pyspark.sql import HiveContext,Row
    hc = HiveContext(sc)
    hc.sql("SELECT key,Value FROM table1")
 
+##6. Creating Hive Table 
+using a query, a table can be directly created -
+```
+hc.sql("create table sect_spending as select sector,avg(totalamt) as spending from wbank group by sector order by spending")
+
+or
+
+hc.sql ("CREATE TABLE sample ( ID INT, NAME STRING, AGE INT) 
+         ROW FORMAT DELIMITED 
+         FIELDS TERMINATED BY ','
+         LINES TERMINATED BY '\n'") 
+```
 
 
-
-  
+##7. Specifying Schema 
+# Using reflection - i.e using inferSchema() method
+   ```
+      people = [Row(name='John',lname='McKay',age=32),Row(name='Thomos',lname='Radagast',age=15)]
+      inf_schm = sc.inferSchema(people)
+      inf_schm.registerTempTable("people")
+   ```
+# Programatically specifying schema 
+   ```
+      from pyspark.sql.types import *
+      
+      data = [("johny","boy",32),("tom","Mckay",15)]
+      
+      fields = [StructField('fname', StringType(),True),StructField('lname', StringType(),True),StructField('Age', IntegerType(),True)] 
+      
+      schema = StructType(fields)
+      
+      newtable = hc.applySchema(data,schema)
+      
+      newtable.registerTempTable("poeple")
+   ```   
+      
+      
 
    
    
