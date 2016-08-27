@@ -81,13 +81,13 @@ hc.sql ("CREATE TABLE sample ( ID INT, NAME STRING, AGE INT)
 
 
 ##7. Specifying Schema 
-# Using reflection - i.e using inferSchema() method
+### Using reflection - i.e using inferSchema() method
    ```
       people = [Row(name='John',lname='McKay',age=32),Row(name='Thomos',lname='Radagast',age=15)]
       inf_schm = sc.inferSchema(people)
       inf_schm.registerTempTable("people")
    ```
-# Programatically specifying schema 
+### Programatically specifying schema 
    ```
       from pyspark.sql.types import *
       
