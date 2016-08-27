@@ -16,16 +16,20 @@
 
 ##3. Loading data using SparkSQL 
 ###A. Loading JSON files 
-  JSON files can be loaded using jsonFile() method of HiveContext/SQLContext
+  JSON files can be loaded using jsonFile() method of HiveContext/SQLContext. 
+  Also read.json() is alternate method that can be used to load json
       
-      `fpath = "file:///home/cloudera/Desktop/json_data/wbank1.json"
-       jfile = hc.jsonFile(fpath)` 
-      
+      ```
+      fpath = "file:///home/cloudera/Desktop/json_data/wbank1.json"
+      jfile = hc.jsonFile(fpath)` 
+      ```
   above json file can be loaded as temporary table which can be queries using SQL commands 
     
-      `jfile.registerTempTable("table1")
-       data = hc.sql("SELECT * FROM table1 WHERE board_approval_month = "November")
-       data.show()`
+      ```
+      jfile.registerTempTable("table1")
+      data = hc.sql("SELECT * FROM table1 WHERE board_approval_month = "November")
+      data.show()
+      ```
 
 ###B. Loading paraquet files
 Loading paraquet files is very much simialr to loading JSON files
@@ -40,6 +44,28 @@ incidently, data (i.e. DATAFRAME / SchemaRDD)  from SparkSQL can be saved as par
   ` data.saveAsParaquetFile("xyz.paraquet")`
   
 ##4. Working on rows  
+
+A simpler way to work on rows is using map() or filter() transformation operations on DATAFRAME/SchemaRDDs.
+
+   ```
+   data = hc.sql("SELECT * FROM table1 WHERE board_approval_month = "November")
+   data_map = data.map(lambda row : (row['borrower'],row['lendprojectcost'))
+   for row in data_map.collect() :
+     print(row)
+   ```
+If a file is loaded using json, select('column name') method can be used.
+
+`data.select('board_approval_month')`
+
+Using python for SparkSQL, a simple `row.columnname`  or `row['column name']`can access columns of a row using its name.,
+
+##5.Reading HIVE table -
+And existing hive table can be read simpley using sql() method of HiveContext
+
+   from pyspark.sql import HiveContext,Row
+   hc = HiveContext(sc)
+   hc.sql("SELECT key,Value FROM table1")
+
 
 
 
