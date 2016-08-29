@@ -38,3 +38,6 @@ Output from getmeta or getschema can be saved in file using unix's ">" operator 
 
 `avro-tools fromjson tweet.json --schema-file tweeter.avsc > tweeter.avro`
 
+
+**see [this repository](https://github.com/Pushkr/avro-cli-examples) for detail information on additional examples of avro tool usage.**
+
