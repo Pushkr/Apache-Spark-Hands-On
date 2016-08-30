@@ -36,3 +36,13 @@ sqoop import --connect jdbc:mysql://localhost/cricket  \
 --lines-terminated-by X \
 --as-sequencefile 
 
+#DEFAULT MYSQL PORT IS 3306
+#import all tables from mysql to HDFS in avro format
+
+sqoop import-all-tables \
+--connect "jdbc:mysql://quickstart.cloudera:3306/retail_db" \
+--m 1 \
+--warehouse-dir=/user/hive/warehouse/retail_avro \
+--as-avrodatafile \
+--username=retail_dba \
+--password=cloudera;
