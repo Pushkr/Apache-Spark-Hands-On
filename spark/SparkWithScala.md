@@ -15,7 +15,11 @@ Basic commands -
                 passed thru flatMap and using split(" ") method. Instead of returning iterator for each line , flatmap will return one single iterator containing all the words.
 
               ` val words = lines.flatMap(line => line.split(" ")) `
-  
+              
+  - union()
+  - intersection()
+  - distinct()
+  - substract()
 
     
 3. Actions -
