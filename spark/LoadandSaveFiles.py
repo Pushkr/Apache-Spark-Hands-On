@@ -35,10 +35,14 @@ like "json.loads" (for string like objects) or "json.load" (for file like object
 I think, json.load may not be useful since we are loading file using spark method textFile()
 already, that gives us RDD with string like object. Need to research this more...
 '''
-
+import json   
 file = sc.textFile("data.json")
 records = file.map(lambda x : json.loads(x))
 
+or 
+
+hc = HiveContext(sc)
+file = hc.read.json("data.json")
 
 #Saving json output is reverse of loading. String like data can be parsed thru "json.dumps()"
 # and saved at end via saveAsTextFile() method
