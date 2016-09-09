@@ -35,11 +35,11 @@ def totaltweetsbyall():
 # Find all the tweets by user 
 result01 = tweetsbyuser("Cas")
 result01.show()
-result01.map(lambda row : row.user,str(row.text))).saveAsTextFile("file:///home/cloudera/Desktop/output/res0")
+#result01.map(lambda row : (row.user,str(row.text))).saveAsTextFile("file:///home/cloudera/Desktop/output/TweetsByUser")
 
 # Find total nnumber of tweets by each user
 result02 = totaltweetsbyall()
-result02.map(lambda row : (row.user,row.NumOfTweets)).saveAsTextFile("file:///home/cloudera/Desktop/output/res1")
+result02.map(lambda row : (row.user,row.NumOfTweets)).saveAsTextFile("file:///home/cloudera/Desktop/output/UserTweetCount1")
 
 #Alternate solution to above
 countMap = data.map(lambda x : x['user']).countByValue()
@@ -51,7 +51,7 @@ for k,v in countMap.items():
 	ListA = ListA.append((k,v))
 
 # Sort list by total count in descending order and save as file
-sc.parallelize(sorted(listA,key=lambda x:x[1],reverse=True)).saveAsTextFile("file:///home/cloudera/Desktop/output/res2")
+sc.parallelize(sorted(listA,key=lambda x:x[1],reverse=True)).saveAsTextFile("file:///home/cloudera/Desktop/output/UserTweetCount2")
 
 #Find all mentions
 men = data.flatMap(lambda x :x['text'].split(" ")) \
@@ -60,5 +60,30 @@ men = data.flatMap(lambda x :x['text'].split(" ")) \
 	.map(lambda x:x.replace('@','')) 
 
 Allmentions = sorted(set(men.collect()))
+sc.parallelize(Allmentions).saveAsTextFile("file:///home/cloudera/Desktop/output/AllMentions")
 
+#Count how many times each person is mentioned
+
+menCountDict =  data.flatMap(lambda x :x['text'].split(" ")) \
+		.filter(lambda x: len(x.strip()) > 1) \
+		.filter(lambda x : x[0] == '@') \
+		.countByValue()
+
+MentionCounts = sorted([(k,v) for k,v in menCountDict],key=lambda x:x[1],reverse=true)
+sc.parallelize(MentionCounts).saveAsTextFile("file:///home/cloudera/Desktop/output/MentionCount")
+
+print("Top 10 mentioned persons are : ")
+for i in range(11):
+	print(Mentioncounts[i][0].replace('@','')+ " was mentioned : " Mentioncounts[i][1] + " times")
+ 
+	
+
+
+
+
+
+
+
+
+print("end of program")
 
