@@ -77,8 +77,15 @@ for i in range(11):
 	print(Mentioncounts[i][0].replace('@','')+ " was mentioned : " Mentioncounts[i][1] + " times")
  
 	
+# Find the 10 most popular Hashtags 
+hash = data.flatMap(lambda x :x['text'].split(" ")) \
+	.filter(lambda x: len(x.strip()) > 1) \
+	.filter(lambda x : x[0] == '#') \
+	.map(lambda x: (x,1)) \
+	.reduceByKey(lambda x,y:x+y)
 
 
+hash.sortBy(lambda x:x[1],False,1).take(10)
 
 
 
