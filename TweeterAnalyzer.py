@@ -35,7 +35,7 @@ def totaltweetsbyall():
 # Find all the tweets by user 
 result01 = tweetsbyuser("Cas")
 result01.show()
-result01.map(lambda row : (str(row.user,encoding='UTF-8'),str(row.text))).saveAsTextFile("file:///home/cloudera/Desktop/output/res0")
+result01.map(lambda row : row.user,str(row.text))).saveAsTextFile("file:///home/cloudera/Desktop/output/res0")
 
 # Find total nnumber of tweets by each user
 result02 = totaltweetsbyall()
@@ -52,5 +52,13 @@ for k,v in countMap.items():
 
 # Sort list by total count in descending order and save as file
 sc.parallelize(sorted(listA,key=lambda x:x[1],reverse=True)).saveAsTextFile("file:///home/cloudera/Desktop/output/res2")
+
+#Find all mentions
+men = data.flatMap(lambda x :x['text'].split(" ")) \
+	.filter(lambda x: len(x.strip()) > 1) \
+	.filter(lambda x : x[0] == '@') \
+	.map(lambda x:x.replace('@','')) 
+
+Allmentions = sorted(set(men.collect()))
 
 
