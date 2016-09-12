@@ -42,6 +42,7 @@ Basic commands -
   
     
 ## Actions -
+### ONE RDD ACTIONS
   - reduce(func) - performd operation on two elements on same RDD and returns element of same type.
     ` val sum = oldRDD.reduce( (x,y) => x + y) ` 
   
@@ -76,6 +77,7 @@ Basic commands -
       similarly output of 2nd partition will be = (35,5) 
       function `(a,b) => (a._1 + b._1,a._2+b._2)' will operate on (10,4) and (35,5) producing result = (45,9)
   
+  - foreach(func) - applies provided function to each element of RDD
   
   - count() - returns number of elements in RDD
   
@@ -89,7 +91,12 @@ Basic commands -
   
   - collect() - dont use this on large cluster unless driver machine has enough capability to store all the data. collect()
                 method will retrieve all data to driver program
+  
+  - takeSample(withReplacement,num,[seed]) - returns random sample of elements
+   
+  - takeOrdered(numOfElementToReturn)(ordering function) - returns num elements based on ordering function
+  
 
-  - foreach(func) - applies provided function to each element of RDD
-  - 
+
+
 
