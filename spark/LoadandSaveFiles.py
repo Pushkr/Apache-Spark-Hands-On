@@ -62,6 +62,18 @@ csv.reader() and csv.writer() are two basic methods that can be used for simple 
 write operation. Both of these methods only create object for reading file. Actual row wise
 reading/writing does not start until 'for' loop is run.
 '''
+```
+import csv
+import StrinIO
+
+def loader(line):
+     input = StringIO.StringIO(line)
+     reader = csv.DictReader(input,fieldnames=['catID','deptID','catName'])
+     return reader.next()
+     
+cfile = sc.textFile("categories.csv").map(loader)
+```
+
 
 '''
 ***Although, book recommends textfile + parsing method, a better method is using databrick's CSV package.
