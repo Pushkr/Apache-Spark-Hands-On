@@ -61,9 +61,18 @@ mUS_director = t2.mapValues(lambda x : [str(names) for names in x]).collect()
 #American movies into account
 
 t4 = hc.sql("select id as movie,actor.id as actor,actor.role as role  \
-	     from usamovies \
-	     LATERAL VIEW EXPLODE(actors) atable  as actor")
+	     from movies \
+	     LATERAL VIEW EXPLODE(actors) atable  as actor \
+	     WHERE country = 'USA'")
 mUs_actors = t4.map(lambda row: (row['movie'],row['actor'],row['role']))
+
+# Question 7 : Create a relation named mUS_actors_full that associates the identifier of each American movie
+#to the full description of each of its actors.
+
+a1 = artists.map(lambda row: (row.id,(row.first_name,row.last_name,row.year_of_birth)))
+a2 = t4.map(lambda row : (row.actor,(row.movie,row.role)))
+a3 = a1.join(a2)
+mUS_actors_full = a3.map(lambda row:(row[1][1][0],row[0],row[1][1][1],str(row[1][0][0])+" "+str(row[1][0][1]),row[1][0][2]))
 
 
 
