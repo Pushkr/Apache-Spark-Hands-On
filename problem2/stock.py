@@ -1,6 +1,8 @@
 import sys
 from stocktick import StockTick
 from pyspark import SparkContext
+import datetime,time
+
 
 def maxValuesReduce(a, b):
    ### TODO: Return a StockTick object with the maximum value between a and b for each one of its
@@ -33,14 +35,27 @@ def generateSpreadsDailyKeys(tick):  ### TODO: Write Me (see below)
 	spread = (tick.ask - tick.bid)/ 2*(tick.ask+tick.bid)
 	return ((k_date,v_time),spread)
 	
+def generateSpreadsMonthlyKeys(tick):  ### TODO: Write Me (see below)
+	date = tick.date  
+	time = tick.time
+	k_month = datetime.date(int(date[6:10]),int(date[:2]),int(date[3:5])).month
+	v_time = datetime.time(int(time[:2]),int(time[3:5]),int(time[6:8])).isoformat()
+	spread = (tick.ask - tick.bid)/ 2*(tick.ask+tick.bid)
+	return ((k_month,v_time),spread)
 
+def generateSpreadsHourlyKeys(tick):  ### TODO: Write Me (see below)
+	date = tick.date  
+	time_1 = tick.time
+	k_hour = time.strptime(str(time_1),"%H:%M:%S").tm_hour
+	v_time = datetime.time(int(time_1[:2]),int(time_1[3:5]),int(time_1[6:8])).isoformat()
+	spread = (tick.ask - tick.bid)/ 2*(tick.ask+tick.bid)
+	return ((k_hour,v_time),spread)
 
-#def generateSpreadsHourlyKeys(tick): ### TODO: Write Me (see below)
 
 def spreadsSumReduce(a, b):          ### TODO: Write Me (see below)
 	return (a[0]+b[0],a[1]+b[1])
 
-
+#def generateSpreadsHourlyKeys(tick): ### TODO: Write Me (see below)
 
 
 if __name__ == "__main__":
@@ -50,8 +65,8 @@ if __name__ == "__main__":
    sc = SparkContext(appName="StockTick")
 
    # rawTickData is a Resilient Distributed Dataset (RDD)
-   rawTickData = sc.textFile("tickdata.txt")
-
+   rawTickData = sc.textFile("tickdata_big.txt").filter(lambda x : len(x.strip()) > 0)
+   
    tickData =  rawTickData.map(lambda x : StockTick(x))
    goodTicks = tickData.filter(lambda x : x.price > 0 and x.bid > 0 and x.ask > 0 and x.units > 0)
   	
@@ -100,26 +115,35 @@ if __name__ == "__main__":
    # 4) The output is written using .saveAsTextFile("WDC_daily")
 
 
+   '''
+   # Daily Spread
+   avgDailySpreads_1 = goodTicks.map(generateSpreadsDailyKeys).groupByKey().mapValues(lambda x : [spread for spread in x][0]).map(lambda x : (x[0][0],(x[1],1))) \
+   .reduceByKey(spreadsSumReduce)    
 
-   #avgDailySpreads = goodTicks.map(generateSpreadsDailyKeys).reduceByKey(spreadsSumReduce);   # (1)
-   avgDailySpreads = goodTicks.map(generateSpreadsDailyKeys) \
-			      .groupByKey() \
-			      .mapValues(lambda x : [spread for spread in x][0]) \ 
-			      .map(lambda x : (x[0][0],(x[1],1))) \
-			      .reduceByKey(spreadsSumReduce)
+   avgDailySpreads_2 = avgDailySpreads_1.map(lambda x: (x[0],float(x[1][0]/x[1][1])))         # (2)
+   avgDailySpreads_3 = avgDailySpreads_2.sortByKey(True,1)                                   # (3)
+   avg = avgDailySpreads_3.saveAsTextFile("WDC_Daily")                                        # (4)
 
-	   
-
-   #avgDailySpreads = avgDailySpreads.map(lambda a: ???)                                      # (2)
-   #avgDailySpreads = avgDailySpreads.sortByKey().map(lambda a: ???)                          # (3)
-   avgDailySpreads = avgDailySpreads.saveAsTextFile("WDC_daily")                              # (4)
-
-
+ 
    # For the monthly spread you only need to change the key. How?
 
-   avgHourlySpreads = goodTicks.map(generateSpreadsHourlyKeys).reduceByKey(spreadsSumReduce); # (1)
-   #avgHourlySpreads = avgHourlySpreads.map(lambda a: ???)                                    # (2)
-   #avgHourlySpreads = avgHourlySpreads.sortByKey().map(lambda a: ???)                        # (3)
-   avgHourlySpreads = avgHourlySpreads.saveAsTextFile("WDC_hourly")                           # (4)
+   avgMonthlySpreads_1 = goodTicks.map(generateSpreadsMonthlyKeys).groupByKey().mapValues(lambda x : [spread for spread in x][0]).map(lambda x : (x[0][0],(x[1],1))) \
+   .reduceByKey(spreadsSumReduce) 
+			  
+   avgMonthlySpreads_2 = avgMonthlySpreads_1.map(lambda x: (x[0],float(x[1][0]/x[1][1])))         # (2)
+   avgMonthlySpreads_3 = avgMonthlySpreads_2.sortByKey(True,1)                                   # (3)
+   avg = avgMonthlySpreads_3.saveAsTextFile("WDC_Monthly")                                        # (4)
+   '''
+
+   # Hourly
+   avgHourlySpreads_1 = goodTicks.map(generateSpreadsHourlyKeys).groupByKey().mapValues(lambda x : [spread for spread in x][0]).map(lambda x : (x[0][0],(x[1],1))) \
+   .reduceByKey(spreadsSumReduce) 
+			  
+   avgHourlySpreads_2 = avgHourlySpreads_1.map(lambda x: (x[0],float(x[1][0]/x[1][1])))         # (2)
+   avgHourlySpreads_3 = avgHourlySpreads_2.sortByKey(True,1)                                   # (3)
+   avg = avgHourlySpreads_3.saveAsTextFile("WDC_Hourly_2")                                        # (4)
+
 
    sc.stop()
+
+
