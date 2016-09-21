@@ -115,7 +115,6 @@ if __name__ == "__main__":
    # 4) The output is written using .saveAsTextFile("WDC_daily")
 
 
-   '''
    # Daily Spread
    avgDailySpreads_1 = goodTicks.map(generateSpreadsDailyKeys).groupByKey().mapValues(lambda x : [spread for spread in x][0]).map(lambda x : (x[0][0],(x[1],1))) \
    .reduceByKey(spreadsSumReduce)    
@@ -133,7 +132,7 @@ if __name__ == "__main__":
    avgMonthlySpreads_2 = avgMonthlySpreads_1.map(lambda x: (x[0],float(x[1][0]/x[1][1])))         # (2)
    avgMonthlySpreads_3 = avgMonthlySpreads_2.sortByKey(True,1)                                   # (3)
    avg = avgMonthlySpreads_3.saveAsTextFile("WDC_Monthly")                                        # (4)
-   '''
+
 
    # Hourly
    avgHourlySpreads_1 = goodTicks.map(generateSpreadsHourlyKeys).groupByKey().mapValues(lambda x : [spread for spread in x][0]).map(lambda x : (x[0][0],(x[1],1))) \
