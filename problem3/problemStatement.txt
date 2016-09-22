@@ -1,0 +1,68 @@
+MovieLens data sets were collected by the GroupLens Research Project at the University of Minnesota. It represent users' reviews of movies.
+ 
+This data set consists of:
+	* 100,000 ratings (1-5) from 943 users on 1682 movies. 
+	* Each user has rated at least 20 movies. 
+        * Simple demographic info for the users (age, gender, occupation, zip)
+
+
+u.data     -- The full u data set, 100000 ratings by 943 users on 1682 items.
+              Each user has rated at least 20 movies.  Users and items are
+              numbered consecutively from 1.  The data is randomly
+              ordered. This is a tab separated list of 
+	         user id | item id | rating | timestamp. 
+              The time stamps are unix seconds since 1/1/1970 UTC   
+
+u.user     -- Demographic information about the users; this is a tab
+              separated list of
+              user id | age | gender | occupation | zip code
+              The user ids are the ones used in the u.data data set.
+
+
+
+Tasks to be performed
+=====================
+
+Setting Up
+
+First, you need to set up the data in Hadoop.
+
+    create table 'u_data' based on the schema of the file 'u.data'
+    import file 'u.data' to table 'u_data'
+    Do a simple query or two to check if everything is OK (for example Body Snatchers is movie 573 and it has 33 reviews) 
+
+    create table 'u_user' based on the schema of the file 'u.user'
+    import file 'u.user' to table 'u_user'
+    Do a simple query or two to check if everything is OK
+
+
+Queries to be performed
+=======================
+
+1. create a u_data table
+
+2. see the field descriptions of u_data table
+
+3. load data into u_data table from a local text file
+
+4. show all the data in the newly created u_data table
+
+5. show the numbers of item reviewed by each user in the newly created u_data table
+
+6. show the numbers of users reviewed each item in the newly created u_data table
+
+7. create a u_user table
+
+8. see the field descriptions of u_user table
+
+9. load data into u_user table from a local text file
+
+10. show all the data in the newly created user table
+
+11. count the number of data in the u_user table
+
+12. count the number of data in the u_user table
+
+13. count the number of user in the u_user table genderwise
+
+14. join u_data table and u_user tables based on userid and show the top 10 results
