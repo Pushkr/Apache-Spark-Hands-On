@@ -1,5 +1,5 @@
 from pyspark import SparkContext,SparkConf
-
+from pyspark.sql import HiveContext,SQLContext
 
 
 if __name__ == '__main__':
@@ -71,5 +71,87 @@ if __name__ == '__main__':
 
 	den_60.coalesce(1).saveAsTextFile("denver_late")
 	 
+
+	'''
+	to access hive tables from spark shell, copied usr/lib/hive/conf/hive-site.xml to usr/lib/spark/conf/
+	'''
+
+	hc = HiveContext(sc)
+	
+	fdata = hc.table("default.flightdelays") 
+	rfdata = fdata.registerTempTable("fdata") 
+	late = hc.sql("select * from fdata where arrdelay > 0 order by arrdelay DESC")
+	
+	# Save delayed flights data. ** notice DATAFRAME.rdd below** 	
+	late.rdd.map(lambda x : str(x.year)+","+str(x.month)+","+str(x.dayofmonth)+","+str(x.deptime)+","+ \
+	x.uniquecarrier +","+str(x.flightnum)+","+str(x.arrdelay)+","+x.origin+","+x.dest) \
+	.saveAsTextFile("flightdelays_non0")
+
+	#Compute the average arrdelay of flights landing in Denver (dest equals "DEN")
+	hc.sql("select avg(arrdelay)  from fdata where dest='DEN'").show()
+	#Compute the average arrdelay of flights where the origin is LAX and the dest is SFO
+	hc.sql("select avg(arrdelay)  from fdata where dest='SFO' and origin = 'LAX'").show()
+	#Determine which dest airport had the highest average arrdelay
+	hc.sql("select dest,avg(arrdelay) as arrdelay  from delayed group by dest order by arrdelay DESC").first()
+
+	# create table	
+	hc.sql(" \
+	CREATE TABLE SFO_WEATHER ( \
+	STATION_NAME STRING, \
+	YEAR INT,\
+	MONTH INT,\
+	DAYOFMONTH INT, \
+	PRECIPITATION INT, \
+	TEMPERATURE_MAX INT, \
+	TEMPERATURE_MIN INT)\
+	ROW FORMAT DELIMITED \
+	FIELDS TERMINATED BY ',' \
+	LINES TERMINATED BY '\n' \
+	STORED AS ORC").show()
+
+	# since csv file records cant be loaded directly as ORC file, create a temporary table
+	hc.sql(" \
+	CREATE TABLE SFO_WEATHER_temp ( \
+	STATION_NAME STRING, \
+	YEAR INT,\
+	MONTH INT,\
+	DAYOFMONTH INT, \
+	PRECIPITATION INT, \
+	TEMPERATURE_MAX INT, \
+	TEMPERATURE_MIN INT)\
+	ROW FORMAT DELIMITED \
+	FIELDS TERMINATED BY ',' \
+	LINES TERMINATED BY '\n'").show()
+
+	# Load temp table in SFO_WEATHER 
+	hc.sql(" \
+	LOAD DATA LOCAL INPATH 'file:///home/cloudera/Desktop/flight/sfo_weather.csv" INTO TABLE SFO_WEATHER_temp').show()
+
+	# load table using query
+	hc.sql("INSERT OVERWRITE table SFO_WEATHER SELECT * FROM SFO_WEATHER_TEMP").show()
+
+	
+	# DROP TEMP TABLE AFTER VERIFYING DATA LOADED CORRECTLY
+	hc.sql("DROP TABLE SFO_WEATHER_TEMP")
+
+
+	#task 09 
+
+	hc.sql(" \
+	CREATE TABLE WEATHER_PARTITIONED ( \
+	STATION_NAME STRING, \
+	DAYOFMONTH INT, \
+	PRECIPITATION INT, \
+	TEMPERATURE_MAX INT, \
+	TEMPERATURE_MIN INT) \
+	PARTITIONED BY (YEAR INT,MONTH INT) \
+	ROW FORMAT DELIMITED \
+	FIELDS TERMINATED BY ',' \
+	LINES TERMINATED BY '\n' \
+	STORED AS ORC ").show()
+	
+	hc.sql(" \
+	INSERT OVERWRITE TABLE WEATHER_PARTITIONED PARTITION(YEAR=2008,MONTH=01) SELECT * FROM SFO_WEATHER WHERE YEAR = 2008 AND MONTH = 01").show()
+	
 	sc.stop()
 
