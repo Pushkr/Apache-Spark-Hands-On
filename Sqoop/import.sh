@@ -1,5 +1,10 @@
 # DATA INGEST Assignment - Import data from a MySQL database into HDFS using Sqoop
 
+# to find hostname url , run following command on terminal
+
+hostname -f
+
+
 #importing from mysql database serially i.e. with map tasks = 1
 
 sqoop import --connect jdbc:mysql://localhost/cricket --table -m 1
