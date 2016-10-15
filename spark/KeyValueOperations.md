@@ -14,8 +14,7 @@
       - mergeValue => is a function that is executed when existing value of key is encounted
       - mergeCombiner => is a combiner function that combines accumulators from different partitions.
       - partitioner => may be HashPartitioner/RangePartitioner/custom Partitioner function, I am not sure yet.
-
--aggregateByKey(zeroValue)(seqOp, combOp, [numTasks])- 
+- aggregateByKey(zeroValue)(seqOp, combOp, [numTasks])- 
       - zeroValue => initial value for aggregation
       - seqop => operates on each row 
       - combOp => Operates on each reducer output
