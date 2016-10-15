@@ -43,6 +43,27 @@ hc.sql("CREATE TABLE newmovies AS SELECT actors,country, \
 director,genre, \
 id, title, year from movies")
 
+# Alternate solution using python function
+import json
+
+# define a function to select the only required json fields
+def json_cleaner(record):
+	clean_record = {'actors':record.actors,
+	                'country':record.country,
+			'director':record.director,
+			'genre':record.genre,
+                        'id':record.id,
+			'title':record.title,
+			'year':record.year
+			}
+	return json.dumps(clean_record)
+
+cleaned_movies = movies.map(json_cleaner)
+cleaned_movies.saveAsTextFile("cleaned_json")
+
+#--------------------
+
+
 # Question 4 : Create a relation named mUS_year that groups the titles of American movies by year.
 t1 = movies.map(lambda x : (x.year,x.title)).groupByKey()
 mUs_year = t1.mapValues(lambda x : [names for names in x]).collect()
