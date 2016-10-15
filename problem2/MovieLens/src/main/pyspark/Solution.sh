@@ -99,8 +99,15 @@ mUS_actors_full = a3.map(lambda row:(row[1][1][0],row[0],row[1][1][1],str(row[1]
 
 
 
+#Question 9 — Filter UDF We now want to list the title and director of all movies for which their director’s
+#first name and last name start with the same letter.
 
+def sameLetter(record):
+	fname =  str(record.director[0])
+	lname = str(record.director[2])
+	if fname[:1] == lname[:1] :
+		line = (record.title,record.director)
+		return line
+	
+movies.map(sameLetter).filter(lambda x : x!= None)
 
-
-
- 
