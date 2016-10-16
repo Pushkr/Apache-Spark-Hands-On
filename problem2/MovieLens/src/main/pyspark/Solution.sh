@@ -8,7 +8,7 @@ hadoop fs -copyFromLocal 'file:///home/cloudera/Desktop/DATA/files/artists_en.js
 hadoop fs -ls movies
 
 
-#Question 2 : load two files in two relations and check if schema's are loaded correctly
+#Question 1 : load two files in two relations and check if schema's are loaded correctly
 
 start pyspark
 
@@ -38,7 +38,7 @@ title STRING, \
 year BIGINT)")
 '''
 
-# Question 3 : remove summary of movies 
+# Question 2 : remove summary of movies 
 hc.sql("CREATE TABLE newmovies AS SELECT actors,country, \
 director,genre, \
 id, title, year from movies")
@@ -64,12 +64,12 @@ cleaned_movies.saveAsTextFile("cleaned_json")
 #--------------------
 
 
-# Question 4 : Create a relation named mUS_year that groups the titles of American movies by year.
+# Question 3 : Create a relation named mUS_year that groups the titles of American movies by year.
 t1 = movies.map(lambda x : (x.year,x.title)).groupByKey()
 mUs_year = t1.mapValues(lambda x : [names for names in x]).collect()
 
 
-#Question 5 Create a relation named mUS_director that groups the titles of American movies by director
+#Question 4 Create a relation named mUS_director that groups the titles of American movies by director
 t2 = movies.filter(movies.country == 'USA') \
 .map(lambda x : ((str(x.director.id),str(x.director.first_name),str(x.director.last_name),str(x.director.year_of_birth)),x.title)) \
 .groupByKey()
@@ -77,7 +77,7 @@ t2 = movies.filter(movies.country == 'USA') \
 mUS_director = t2.mapValues(lambda x : [str(names) for names in x]).collect()
 
 
-##Question 6 : Create a relation named mUS_actors that contains (movieId, actorId, role) tuples. Each
+##Question 5 : Create a relation named mUS_actors that contains (movieId, actorId, role) tuples. Each
 #movie will appear in as many tuples as there are actors listed for that movie. Again, we only want to take
 #American movies into account
 
@@ -87,7 +87,10 @@ t4 = hc.sql("select id as movie,actor.id as actor,actor.role as role  \
 	     WHERE country = 'USA'")
 mUs_actors = t4.map(lambda row: (row['movie'],row['actor'],row['role']))
 
-# Question 7 : Create a relation named mUS_actors_full that associates the identifier of each American movie
+
+
+
+# Question 6 : Create a relation named mUS_actors_full that associates the identifier of each American movie
 #to the full description of each of its actors.
 
 a1 = artists.map(lambda row: (row.id,(row.first_name,row.last_name,row.year_of_birth)))
@@ -95,6 +98,21 @@ a2 = t4.map(lambda row : (row.actor,(row.movie,row.role)))
 a3 = a1.join(a2)
 mUS_actors_full = a3.map(lambda row:(row[1][1][0],row[0],row[1][1][1],str(row[1][0][0])+" "+str(row[1][0][1]),row[1][0][2]))
 
+
+
+# Alternate Solution using python
+
+def mapper(record):
+	newRecord = []
+	for actor in record.actors:
+		newRecord.append((actor[0],(record.id,actor[1])))
+	return newRecord
+		
+
+movies_actors = ofile.flatMap(mapper)
+artists_filtered = artists.map(lambda record : (record.id,(record.first_name,record.last_name,record.year_of_birth)))
+joined = artists_filtered.join(movies_actors)
+MUs_full_actors = joined.map(lambda record : (record[1][1][0],record[0],record[1][1][1],record[1][0][0],record[1][0][1],record[1][0][2]))
 
 
 
