@@ -1,0 +1,23 @@
+CCA 175 : attempt 1
+
+problem1 : import table data into HDFS using sqoop command. data was comma separated fields. Approximately 25mil lines. 
+problem2 : export HDFS data into specified mysql table. Maintain the data record format. Data was in tab separated format. Aprox 25mil lines.
+problem3 : Create a table employee in problem3 database. Data was stored in specific HDFS location. Point the table to existing
+           data in HDFS. Data was in comma separated format
+problem4 :  create table employee in problem4 database and load data which was stored in HDFS directory in PARQUET format. Table coulmns 
+          in problem3 scenario were not exactly same as problem 4. Last two columns 'hiredate' and 'birthdate' were swapped.
+
+problem5 : Create a employee table which is paritioned by 'state' column and load the data which was saved in HDFS directory into that table.
+         sql template was provided. template contained basic commands statements like "CREATE EXTERNAL TABLE... #to-do", 
+         "INSERT INTO EMPLOYEE #TO-DO" and  set command to set HIVE in nonstrict mode. 
+          After first attempt, execution throwed error saying parition limit is set to 100.
+          
+problem6 : Scala program
+problem7 : Python program
+problem8 : scala program
+problem 9 : python program
+problem 10 : There was a script given to run. Problem was script was throwing AVRODATAEXCEPTION. 
+             This script contained 'hive -e 'select * from employee' command. Table was pointing to specific
+             schema stored in hdfs location as JSON file. Task was to update the JSON in such a way that hive query will 
+             run without errors. It was simple change from "int" to "long" in JSON file.
+             
