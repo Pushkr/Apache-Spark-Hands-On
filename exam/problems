@@ -12,7 +12,8 @@ problem5 : Create a employee table which is paritioned by 'state' column and loa
          "INSERT INTO EMPLOYEE #TO-DO" and  set command to set HIVE in nonstrict mode. 
           After first attempt, execution throwed error saying parition limit is set to 100.
           
-problem6 : Scala program
+problem6 : Scala program , This was simple map and filter operation program. Task was to read files stored in specific location,
+           data was in comma separated format. 
 problem7 : Python program
 problem8 : scala program
 problem 9 : python program
