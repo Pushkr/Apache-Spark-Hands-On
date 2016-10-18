@@ -1,9 +1,12 @@
 CCA 175 : attempt 1
 
 problem1 : import table data into HDFS using sqoop command. data was comma separated fields. Approximately 25mil lines. 
+
 problem2 : export HDFS data into specified mysql table. Maintain the data record format. Data was in tab separated format. Aprox 25mil lines.
+
 problem3 : Create a table employee in problem3 database. Data was stored in specific HDFS location. Point the table to existing
            data in HDFS. Data was in comma separated format
+
 problem4 :  create table employee in problem4 database and load data which was stored in HDFS directory in PARQUET format. Table coulmns 
           in problem3 scenario were not exactly same as problem 4. Last two columns 'hiredate' and 'birthdate' were swapped.
 
@@ -13,10 +16,21 @@ problem5 : Create a employee table which is paritioned by 'state' column and loa
           After first attempt, execution throwed error saying parition limit is set to 100.
           
 problem6 : Scala program , This was simple map and filter operation program. Task was to read files stored in specific location,
-           data was in comma separated format. 
-problem7 : Python program
-problem8 : scala program
-problem 9 : python program
+           data was in comma separated format. Data was employee table and filtering operation was to find employee's in TEXAS state.
+           Scala program template was provided and to run the program on cluster a run.sh file was provided. 
+           
+           Note: At my first attempt I wasnt aware of how to run shell script. 
+           to run shell script, first mark the file as executable using "chmod +x run.sh"
+           and then run the script using fully qualified address on that file on command line , like -
+           $: /home/user/problem6/run.sh
+           
+problem7 : Python program , Again simple map and filter opeation program. 
+
+problem8 : scala program , task was to filter and map some data from employee table and then join these two datasets using 
+           join/union operation. There was some lines with keyBy() function, which I wasnt aware of at the time of exam.
+
+problem 9 : python program. I dont think i read this problem throughly but there was sorting and aggrgation involved.
+
 problem 10 : There was a script given to run. Problem was script was throwing AVRODATAEXCEPTION. 
              This script contained 'hive -e 'select * from employee' command. Table was pointing to specific
              schema stored in hdfs location as JSON file. Task was to update the JSON in such a way that hive query will 
