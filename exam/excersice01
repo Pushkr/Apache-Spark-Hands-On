@@ -29,5 +29,10 @@ table data should be tab separated format.
 
 task#3 : 
 
+Write a python script to read employee data from warehouse. Modify data to be tab separated instead of comma separated
+and save results in '/user/cloudera/solution3'
+A template of program is provided in '/home/cloudera/task03' directory in task03.py. You may use run.sh to execute the script
+
+
 
 
