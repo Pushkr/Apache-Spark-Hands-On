@@ -58,4 +58,10 @@ Task06 :
 Write a scala/python script to find the employees who had largest increament in salary since they joined the company.
 
 
+Task07 : 
+This depends on data generated from task 03. Create a employee table in hive which when queried on will perform faster when 
+separated by a new columns 'hire-year' and 'hire-month'
+
+
+
 
