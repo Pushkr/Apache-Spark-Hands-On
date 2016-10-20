@@ -1,3 +1,5 @@
+Import employee database to mysql from - http://dev.mysql.com/doc/employee/en/
+
 task#1 :
 There is a employee database in mysql. Import all the tables from employee database into HDFS. 
 Save all table data in  warehouse directory '/user/hive/warehouse' 
@@ -33,6 +35,27 @@ Write a python script to read employee data from warehouse. Modify data to be ta
 and save results in '/user/cloudera/solution3'
 A template of program is provided in '/home/cloudera/task03' directory in task03.py. You may use run.sh to execute the script
 
+
+
+Task#04 :
+
+Write scala script to find the employees whose title is 'Senior Engineer' and salary is in range '$75,000 - $100,000'. 
+Save the results in '/user/cloudera/solution4'
+A template of program is provided in '/home/cloudera/task04' directory in task03.py. You may use run.sh to execute the script
+
+Output should be in following format -
+
+employeeID,title,salary
+
+
+Task05 : 
+
+Write a python script to find the average salary of female employees and male employees.
+
+
+
+Task06 :
+Write a scala/python script to find the employees who had largest increament in salary since they joined the company.
 
 
 
