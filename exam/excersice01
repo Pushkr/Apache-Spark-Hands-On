@@ -18,7 +18,7 @@ Following tables should get imported successfully.
 | titles              |
 +---------------------+
 
-
+Concepts Covered : Sqoop import, Hive Database 
 
 
 task#2:
@@ -27,7 +27,7 @@ Save all table data in  warehouse directory '/user/hive/warehouse'
 Tables should be accessible via hive 
 table data should be tab separated format.
 
-
+Concepts Covered : Sqoop Import, data modification
 
 task#3 : 
 
@@ -35,7 +35,7 @@ Write a python script to read employee data from warehouse. Modify data to be ta
 and save results in '/user/cloudera/solution3'
 A template of program is provided in '/home/cloudera/task03' directory in task03.py. You may use run.sh to execute the script
 
-
+Concepts Covered : Pyspark, map, saveAsTextFiles,python,spark-submit
 
 Task#04 :
 
@@ -48,19 +48,30 @@ Output should be in following format -
 employeeID,title,salary
 
 
+Concepts Covered : spark-shell,spark-submit,Scala,map,filter,join
+
 Task05 : 
 
 Write a python script to find the average salary of female employees and male employees.
 
-
+Concepts Covered : pyspark,python,map,filter,aggregateByKey,reduceByKey
 
 Task06 :
 Write a scala/python script to find the employees who had largest increament in salary since they joined the company.
 
+Concepts Covered : pyspark,passing function to spark, map,filter, sortBy()
+
 
 Task07 : 
-This depends on data generated from task 03. Create a employee table in hive which when queried on will perform faster when 
-separated by a new columns 'hire-year' and 'hire-month'
+This depends on data generated from task 03. Create a employee table in hive database solution7 which when 
+queried on will perform faster when separated by a new columns 'hire-year' and 'hire-month'. Table data should recide in 
+'/user/cloudera/employees_partitioned'
+
+Concepts Covered : Hive DDL,paritioning, create external, insert
+
+
+
+
 
 
 
