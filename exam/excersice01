@@ -1,0 +1,33 @@
+task#1 :
+There is a employee database in mysql. Import all the tables from employee database into HDFS. 
+Save all table data in  warehouse directory '/user/hive/warehouse' 
+Tables should be accessible via hive 
+table data should be comma separated format.
+
+Following tables should get imported successfully.
++---------------------+
+| Tables_in_employees |
++---------------------+
+| departments         |
+| dept_emp            |
+| dept_manager        |
+| employees           |
+| salaries            |
+| titles              |
++---------------------+
+
+
+
+
+task#2:
+There is a employee database in mysql. Import table employees in HDFS in 'solution' database in hive.
+Save all table data in  warehouse directory '/user/hive/warehouse' 
+Tables should be accessible via hive 
+table data should be tab separated format.
+
+
+
+task#3 : 
+
+
+
