@@ -72,6 +72,11 @@ where
   - MAP
   
   
+PARTITIONING :
 
+BEFORE INSERTING INTO PARTITIONED TABLE IN DYNAMIC MODE, SET FOLLOWING PROPERTIES -
+
+# SET hive.exec.dynamic.partition.mode=nonstrict;
+# SET hive.exec.max.dynamic.partitions.pernode  = 1000 
 
   
