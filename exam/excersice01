@@ -70,6 +70,14 @@ queried on will perform faster when separated by a new columns 'hire-year' and '
 Concepts Covered : Hive DDL,paritioning, create external, insert
 
 
+Task08: 
+
+Convert all tables (from task01 )in which are stored in comma separated format in /user/hive/warehouse to json and 
+store json data in /user/cloudera/employees_json/
+
+
+
+
 
 
 
