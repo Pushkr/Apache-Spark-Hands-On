@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
 
 	avgSalesPerDay.map(lambda row : ",".join([row.orderDate,str(row.avgSales)]))\
-  .coalesce(1) \
-  .saveAsTextFile("AvgSalesPerDay2")
+  	.coalesce(1) \
+  	.saveAsTextFile("AvgSalesPerDay2")
 
 	sc.stop()
