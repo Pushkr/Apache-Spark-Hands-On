@@ -14,3 +14,4 @@
 - `/problem4` - Lahman's baseball database analysis
 - `/problem5` - Hortonworks certification sample. Total 10 tasks .
 - `/Tweeter`  - Tweeter data analysis
+- `/problem6` - Retail database sample excercises 
