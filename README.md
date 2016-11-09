@@ -8,8 +8,8 @@
 
 ### Hands-on :
 - `/exam` : sample cca-175 exam questions and solutions (in solution branch)
-- `/problem1` - complex data structure handling using hive
-- `/problem2` - Stock data analysis
+- `/problem1` - complex data structure handling using hive. (exposure to Hive,create table,LOAD,named_struct,struct)
+- `/problem2` - Stock data analysis. (exposure to : json file handing, SparkSQL,map,reduce,filter,join,groupByKey,keyBy,UDFs etc)
 - `/problem3` - MovieLens database analysis
 - `/problem4` - Lahman's baseball database analysis
 - `/problem5` - Hortonworks certification sample. Total 10 tasks .
