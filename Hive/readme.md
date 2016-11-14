@@ -99,6 +99,9 @@ create table using below -
 
 - Creating bucketed table
 
+first set the property to enable bucketing 
+` set hive.enforce.bucketing = true` 
+
 ```
   CREATE TABLE IF NOT EXISTS JSON_TEMP (PRODUCT_ID INT,PRODUCT_NAME STRING)
   PARTITIONED BY (PRODUCT_PRICE_RANGE STRING)
