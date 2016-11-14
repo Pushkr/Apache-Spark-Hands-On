@@ -189,3 +189,22 @@ using hive CLI:
 
 -----------------------------------------
 
+- Additional commands 
+
+	to find specific configuration properties using SET command -
+
+	`hive -S -e "set" |grep warehouse`
+
+	above command will print all the configuration properties on console that have word 'warehouse' in them
+
+
+	to see currently working database
+
+	`set hive.cli.print.current.db=true`
+
+	command to see all the processes that are running on specific port
+	
+	`netstat -an|grep 3306`
+	
+
+
