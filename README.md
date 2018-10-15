@@ -1,3 +1,5 @@
+For the benefit of community, Please feel free to add/request anything that hasnt been covered. Please remember this is beginners guide and expert level documentation. 
+
 # Hadoop
 
 - `/Flume` : contains notes and examples of apache flume
