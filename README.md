@@ -1,4 +1,4 @@
-For the benefit of community, Please feel free to add/request anything that hasnt been covered. Please remember this is beginners guide and expert level documentation. 
+For the benefit of community, Please feel free to add/request anything that hasnt been covered. Please remember this is beginners guide and not a expert level documentation. 
 
 # Hadoop
 
